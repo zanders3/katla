@@ -1,0 +1,41 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="CompressionHelper.cs">
+    <Files>
+      <File FileName="Main.cs" Line="16" Column="33" />
+      <File FileName="Server/ServerAppHost.cs" Line="20" Column="10" />
+      <File FileName="Server/CreateApp.cs" Line="25" Column="5" />
+      <File FileName="ProcessHelper.cs" Line="27" Column="41" />
+      <File FileName="Server/CreateAppProcess.cs" Line="14" Column="13" />
+      <File FileName="Client/CreateAppClient.cs" Line="12" Column="13" />
+      <File FileName="Server/DeployApp.cs" Line="6" Column="1" />
+      <File FileName="Client/DeployAppClient.cs" Line="15" Column="46" />
+      <File FileName="CompressionHelper.cs" Line="17" Column="70" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Katla" expanded="True" selected="True">
+            <Node name="References" expanded="True" />
+            <Node name="Client" expanded="True" />
+            <Node name="Server" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/alex/Code/web/katla/Katla/Client/DeployAppClient.cs" line="13" />
+      <Breakpoint file="/Users/alex/Code/web/katla/Katla/CompressionHelper.cs" line="40" />
+      <Breakpoint file="/Users/alex/Code/web/katla/Katla/CompressionHelper.cs" line="51" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
