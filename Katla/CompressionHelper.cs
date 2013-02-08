@@ -32,7 +32,7 @@ namespace zanders3.Katla
             }
         }
 
-        public static void ExtractFolderFromString(string compressedData, string targetDirectory)
+        public static void ExtractFolderFromString(Action<string> logMessage, string compressedData, string targetDirectory)
         {
             byte[] buffer = Convert.FromBase64String(compressedData);
             using (MemoryStream inputStream = new MemoryStream(buffer))
@@ -45,7 +45,7 @@ namespace zanders3.Katla
                         while (fileName.Length > 0)
                         {
                             string filePath = Path.Combine(targetDirectory, fileName);
-                            Console.WriteLine(filePath);
+                            logMessage(filePath);
                             if (!Directory.Exists(Path.GetDirectoryName(filePath)))
                                 Directory.CreateDirectory(filePath);
 

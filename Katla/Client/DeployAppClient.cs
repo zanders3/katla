@@ -24,7 +24,13 @@ namespace zanders3.Katla
                     Contents = content
                 });
 
-                Console.WriteLine("----> Restarting app");
+                DeployAppStatusRequest request = new DeployAppStatusRequest() { AppName = appName };
+                DeployAppStatusResponse response = client.Get(request);
+                while (!response.Completed)
+                {
+                    Console.Write(response.Log);
+                    response = client.Get(request);
+                }
             }
             catch (WebServiceException e)
             {

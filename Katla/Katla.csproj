@@ -20,7 +20,7 @@
     <WarningLevel>0</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>False</ConsolePause>
-    <Commandlineparameters>deploy test</Commandlineparameters>
+    <Commandlineparameters>server localhost 8080</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -48,6 +48,15 @@
     <Reference Include="ServiceStack.Interfaces">
       <HintPath>..\lib\ServiceStack.Common.3.9.33\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Data.Sqlite">
+      <HintPath>..\lib\ServiceStack.OrmLite.Sqlite.Mono.3.9.33\lib\net35\Mono.Data.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite.Sqlite">
+      <HintPath>..\lib\ServiceStack.OrmLite.Sqlite.Mono.3.9.33\lib\net35\ServiceStack.OrmLite.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite">
+      <HintPath>..\lib\ServiceStack.OrmLite.Sqlite.Mono.3.9.33\lib\net35\ServiceStack.OrmLite.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -60,6 +69,7 @@
     <Compile Include="Server\DeployApp.cs" />
     <Compile Include="Client\DeployAppClient.cs" />
     <Compile Include="CompressionHelper.cs" />
+    <Compile Include="Server\DeployAppProcess.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
