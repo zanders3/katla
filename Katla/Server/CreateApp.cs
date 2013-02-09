@@ -8,6 +8,8 @@ using ServiceStack.Common.Web;
 using System.Text;
 using System.Threading;
 
+using ServiceStack.OrmLite;
+
 namespace zanders3.Katla.Server
 {
     [Route("/CreateApp")]
@@ -42,6 +44,8 @@ namespace zanders3.Katla.Server
                 throw HttpError.Conflict("Missing AppName");
             if (string.IsNullOrEmpty(request.BuildScript))
                 throw HttpError.Conflict("Missing Build Script");
+            if (AppStatusModel.Get(request.AppName) != null)
+                throw HttpError.Conflict("App already exists");
 
             lock (appCreationStatus)
             {

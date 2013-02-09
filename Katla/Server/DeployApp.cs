@@ -39,6 +39,9 @@ namespace zanders3.Katla.Server
 
         public void Post(DeployAppRequest request)
         {
+            if (AppStatusModel.Get(request.AppName) == null)
+                throw HttpError.NotFound("App not found");
+
             lock (deployAppStatus)
             {
                 if (deployAppStatus.ContainsKey(request.AppName) && !deployAppStatus [request.AppName].Completed)

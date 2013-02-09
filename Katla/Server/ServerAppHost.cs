@@ -1,5 +1,7 @@
 using System;
 using ServiceStack.WebHost.Endpoints;
+using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.Sqlite;
 
 namespace zanders3.Katla.Server
 {
@@ -11,6 +13,9 @@ namespace zanders3.Katla.Server
         
         public override void Configure(Funq.Container container)
         {
+            OrmLiteConfig.DialectProvider = new SqliteOrmLiteDialectProvider();
+            OrmLiteConnectionFactory factory = new OrmLiteConnectionFactory("data.sql", OrmLiteConfig.DialectProvider);
+            AppStatusModel.Setup(factory);
         }
     }
     

@@ -70,6 +70,8 @@
     <Compile Include="Client\DeployAppClient.cs" />
     <Compile Include="CompressionHelper.cs" />
     <Compile Include="Server\DeployAppProcess.cs" />
+    <Compile Include="Server\AppStatus.cs" />
+    <Compile Include="Server\Nginx.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

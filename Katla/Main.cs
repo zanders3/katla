@@ -13,7 +13,7 @@ namespace zanders3.Katla
 			Console.WriteLine("\n\tkatla server <endpoint> <port>\n\tRuns the katla server");
 		}
 
-        const string Endpoint = /*"http://localhost:8080/";*/"http://168.61.13.3/";
+        const string Endpoint = /*"http://localhost:8080/";*/"http://katla.cloudapp.net/";
 
 		public static void Main(string[] args)
 		{

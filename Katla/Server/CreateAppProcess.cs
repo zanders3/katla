@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 
-namespace zanders3.Katla
+namespace zanders3.Katla.Server
 {
     public static class CreateAppProcess
     {
@@ -25,6 +25,11 @@ namespace zanders3.Katla
 
             // Complete!
             logMessage("----> Built Sucessfully");
+            AppStatusModel.Save(new AppStatus()
+            {
+                AppName = appName,
+                Running = false
+            });
         }
     }
 }

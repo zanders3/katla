@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.IO;
 using ServiceStack.Common.Web;
+using System.Collections.Generic;
 
 namespace zanders3.Katla.Server
 {
@@ -47,15 +49,33 @@ namespace zanders3.Katla.Server
                     "start on net-device-up IFACE=eth0\nrespawn\nexec /home/ubuntu/web/startup.sh\nconsole output"
                 );
 
+                // Assign container internal static ip address
+                logMessage("-----> Writing container configuration file");
+                AppStatus status = AppStatusModel.Get(request.AppName);
+                status.InternalIP = "10.0.3." + (status.ID + 1);
+                status.HostName  = status.AppName + ".katla.3zanders.co.uk";
 
-                // Start a container
-                logMessage("-----> Starting a container");
-                ProcessHelper.Run(logMessage, "lxc-start-ephemeral", "-d", "-o", request.AppName);
+                List<string> configFile = 
+                    File.ReadAllLines("/var/lib/lxc/" + request.AppName + "/config")
+                    .Where(line => !line.Contains("lxc.network.ipv4"))
+                    .ToList();
+                configFile.Add("lxc.network.ipv4 = " + status.InternalIP);
 
-                //TODO: system to spin up, scale and track instances.
-                //TODO: copy config file and append lxc.network.ipv4 = 10.0.3.X
-                //TODO: update nginx config file and restart nginx.
-                //TODO: add routing system via route 53 (which then load balances to multiple boxes. WHOA.)
+                File.WriteAllLines("/var/lib/lxc/" + request.AppName + "/config", configFile);
+
+                //Start the container
+                logMessage("------> Starting container");
+                ProcessHelper.Run(logMessage, "lxc-stop", "-n", request.AppName);
+                ProcessHelper.Run(logMessage, "lxc-start", "-d", "-n", request.AppName);
+
+                //Generate the nginx configuration file
+                logMessage("------> Updating and restarting nginx");
+                status.Running = true;
+
+                AppStatusModel.Save(status);
+                Nginx.Configure(logMessage);
+
+                //TODO: make an API call to the hosting system to add the hostname as a CNAME to point to katla.3zanders.co.uk
 
                 logMessage("-----> App deployed");
                 lock (request)
