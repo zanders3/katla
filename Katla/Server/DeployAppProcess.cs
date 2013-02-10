@@ -37,31 +37,30 @@ namespace zanders3.Katla.Server
                 logMessage("----> Extract files (" + ((float)request.Contents.Length / (1024.0f * 1024.0f)) + " KB)");
                 CompressionHelper.ExtractFolderFromStream(logMessage, request.Contents, deployDir);
 
+                // Detect and install dependencies
+                logMessage("----> Install app dependencies");
+                DependencyChecker.CheckAndInstall(logMessage, deployDir, "/var/lib/lxc/" + request.AppName + "/rootfs/");
+
                 // Create web startup job
                 logMessage("----> Placing startup job");
-                if (!File.Exists("/var/lib/lxc/" + request.AppName + "/rootfs/home/ubuntu/web/startup.sh"))
-                    throw HttpError.Conflict("startup.sh script not found. I don't know how to start the service.");
-                ProcessHelper.Run(logMessage, "chmod", "+x", "/var/lib/lxc/" + request.AppName + "/rootfs/home/ubuntu/web/startup.sh");
+                if (!File.Exists(deployDir + "/Procfile"))
+                    throw HttpError.NotFound("Missing Procfile (" + deployDir + "/Procfile)");
 
-                logMessage("/var/lib/lxc/" + request.AppName + "/rootfs/etc/init/web.conf");
-                File.WriteAllText(
-                    "/var/lib/lxc/" + request.AppName + "/rootfs/etc/init/web.conf", 
-                    "start on net-device-up IFACE=eth0\nrespawn\nexec /home/ubuntu/web/startup.sh\nconsole output"
-                );
+                string startupJob = "/var/lib/lxc/" + request.AppName + "/rootfs/etc/init/web.conf";
+                logMessage(startupJob);
 
-                // Assign container internal static ip address
-                logMessage("----> Writing container configuration file");
-                AppStatus status = AppStatusModel.Get(request.AppName);
-                status.InternalIP = "10.0.3." + (status.ID + 1);
-                status.HostName  = status.AppName + ".katla.3zanders.co.uk";
-
-                List<string> configFile = 
-                    File.ReadAllLines("/var/lib/lxc/" + request.AppName + "/config")
-                    .Where(line => !line.Contains("lxc.network.ipv4"))
-                    .ToList();
-                configFile.Add("lxc.network.ipv4 = " + status.InternalIP);
-
-                File.WriteAllLines("/var/lib/lxc/" + request.AppName + "/config", configFile);
+                string[] startupJobContent = new string[]
+                {
+                    "start on net-device-up IFACE=eth0",
+                    "respawn",
+                    "script",
+                    "cd /home/ubuntu/web",
+                    "chmod +x Procfile",
+                    "./Procfile",
+                    "end script",
+                    "console output"
+                };
+                File.WriteAllText(startupJob, string.Join("\n", startupJobContent));
 
                 //Start the container
                 logMessage("-----> Starting container");
@@ -70,9 +69,6 @@ namespace zanders3.Katla.Server
 
                 //Generate the nginx configuration file
                 logMessage("------> Updating and restarting nginx");
-                status.Running = true;
-
-                AppStatusModel.Save(status);
                 Nginx.Configure(logMessage);
 
                 //TODO: make an API call to the hosting system to add the hostname as a CNAME to point to katla.3zanders.co.uk

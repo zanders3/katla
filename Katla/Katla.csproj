@@ -48,15 +48,6 @@
     <Reference Include="ServiceStack.Interfaces">
       <HintPath>..\lib\ServiceStack.Common.3.9.33\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Data.Sqlite">
-      <HintPath>..\lib\ServiceStack.OrmLite.Sqlite.Mono.3.9.33\lib\net35\Mono.Data.Sqlite.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.OrmLite.Sqlite">
-      <HintPath>..\lib\ServiceStack.OrmLite.Sqlite.Mono.3.9.33\lib\net35\ServiceStack.OrmLite.Sqlite.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.OrmLite">
-      <HintPath>..\lib\ServiceStack.OrmLite.Sqlite.Mono.3.9.33\lib\net35\ServiceStack.OrmLite.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -70,8 +61,8 @@
     <Compile Include="Client\DeployAppClient.cs" />
     <Compile Include="CompressionHelper.cs" />
     <Compile Include="Server\DeployAppProcess.cs" />
-    <Compile Include="Server\AppStatus.cs" />
     <Compile Include="Server\Nginx.cs" />
+    <Compile Include="Server\DependencyChecker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

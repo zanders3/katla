@@ -9,15 +9,17 @@ namespace zanders3.Katla.Server
     {
         public static void Configure(Action<string> logMessage)
         {
-            List<string> fileLines = AppStatusModel.Get().Where(app => app.Running).SelectMany(app =>
+            IEnumerable<string> appNames = Directory.GetDirectories("/var/lib/lxc/").Select(folder => Path.GetFileName(folder));
+
+            List<string> fileLines = appNames.SelectMany(app =>
             {
                 return new List<string>()
                 {
                     "server {",
                     "\tlisten\t80;",
-                    "\tserver_name " + app.HostName + ";",
+                    "\tserver_name " + app + ".katla.3zanders.co.uk;",
                     "\tlocation / {",
-                    "\t\tproxy_pass http://" + app.InternalIP + ":8080;",
+                    "\t\tproxy_pass http://" + app + ":8080;",
                     "\t}",
                     "}"
                 }; 

@@ -39,7 +39,7 @@ namespace zanders3.Katla.Server
 
         public void Post(DeployAppRequest request)
         {
-            if (AppStatusModel.Get(request.AppName) == null)
+            if (!Directory.Exists("/var/lib/lxc/" + request.AppName))
                 throw HttpError.NotFound("App not found: " + request.AppName);
 
             lock (deployAppStatus)

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,7 +17,6 @@ namespace zanders3.Katla.Server
     public class CreateAppRequest : IReturnVoid
     {
         public string AppName { get; set; }
-        public string BuildScript { get; set; }
     }
 
     [Route("/CreateApp/{AppName}")]
@@ -42,9 +42,7 @@ namespace zanders3.Katla.Server
         {
             if (string.IsNullOrEmpty(request.AppName))
                 throw HttpError.Conflict("Missing AppName");
-            if (string.IsNullOrEmpty(request.BuildScript))
-                throw HttpError.Conflict("Missing Build Script");
-            if (AppStatusModel.Get(request.AppName) != null)
+            if (Directory.Exists("/var/lib/lxc/" + request.AppName))
                 throw HttpError.Conflict("App already exists");
 
             lock (appCreationStatus)
@@ -92,7 +90,7 @@ namespace zanders3.Katla.Server
 
             try
             {
-                CreateAppProcess.CreateApp(request.AppName, request.BuildScript, logMessage);
+                CreateAppProcess.CreateApp(request.AppName, logMessage);
                 lock (appCreationStatus)
                 {
                     appCreationStatus[request.AppName].Completed = true;

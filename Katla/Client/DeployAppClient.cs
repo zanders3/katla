@@ -18,8 +18,7 @@ namespace zanders3.Katla
                 Console.WriteLine("----> Compressing files");
                 byte[] folder = CompressionHelper.CompressFolderToBytes(Environment.CurrentDirectory);
 
-                Console.WriteLine("----> Uploading files (new)");
-                Console.WriteLine("Uploading " + ((float)folder.Length / 1024.0f) + " MB");
+                Console.WriteLine("----> Uploading files (" + ((float)folder.Length / (1024.0f*1024.0f)) + " MB)");
 
                 File.WriteAllBytes("deploy.gzip", folder);
                 client.PostFile<int>("/API/Deploy/" + appName, new FileInfo("deploy.gzip"), "multipart/form-data");

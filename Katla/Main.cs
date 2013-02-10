@@ -18,24 +18,8 @@ namespace zanders3.Katla
 
         const string Endpoint = /*"http://localhost:8080/";*/"http://katla.3zanders.co.uk/";
 
-        private static IEnumerable<Assembly> GetDependentAssemblies(Assembly analyzedAssembly)
-        {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => GetNamesOfAssembliesReferencedBy(a)
-                       .Contains(analyzedAssembly.FullName));
-        }
-        
-        public static IEnumerable<string> GetNamesOfAssembliesReferencedBy(Assembly assembly)
-        {
-            return assembly.GetReferencedAssemblies()
-                .Select(assemblyName => assemblyName.FullName);
-        }
-
 		public static void Main(string[] args)
 		{
-            foreach (string assembly in GetNamesOfAssembliesReferencedBy(Assembly.GetExecutingAssembly()))
-                Console.WriteLine(assembly);
-
             if (args.Length == 0)
 			{
 				PrintHelp();
@@ -45,13 +29,13 @@ namespace zanders3.Katla
 			switch (args[0]) 
 			{
 			case "create":
-				if (args.Length != 3 || !File.Exists(args[2]))
+				if (args.Length != 2)
 				{
 					PrintHelp();
 					return;
 				}
 				
-				CreateAppClient.CreateApp(Endpoint, args[1], args[2]);
+				CreateAppClient.CreateApp(Endpoint, args[1]);
 				break;
 			case "deploy":
                 if (args.Length != 2)

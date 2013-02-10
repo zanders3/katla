@@ -7,13 +7,12 @@ namespace zanders3.Katla
 {
     public static class CreateAppClient
     {
-        public static void CreateApp(string endpoint, string appName, string buildScript)
+        public static void CreateApp(string endpoint, string appName)
         {
             JsonServiceClient client = new JsonServiceClient(endpoint);
             client.Post(new Server.CreateAppRequest()
             {
-                AppName = appName,
-                BuildScript = File.ReadAllText(buildScript)
+                AppName = appName
             });
 
             try
