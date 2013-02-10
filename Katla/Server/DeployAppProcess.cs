@@ -34,8 +34,8 @@ namespace zanders3.Katla.Server
                 Directory.CreateDirectory(deployDir);
 
                 // Extract files to directory
-                logMessage("----> Extract files");
-                CompressionHelper.ExtractFolderFromString(logMessage, request.Contents, deployDir);
+                logMessage("----> Extract files (" + ((float)request.Contents.Length / (1024.0f * 1024.0f)) + " KB)");
+                CompressionHelper.ExtractFolderFromStream(logMessage, request.Contents, deployDir);
 
                 // Create web startup job
                 logMessage("----> Placing startup job");
@@ -50,7 +50,7 @@ namespace zanders3.Katla.Server
                 );
 
                 // Assign container internal static ip address
-                logMessage("-----> Writing container configuration file");
+                logMessage("----> Writing container configuration file");
                 AppStatus status = AppStatusModel.Get(request.AppName);
                 status.InternalIP = "10.0.3." + (status.ID + 1);
                 status.HostName  = status.AppName + ".katla.3zanders.co.uk";
@@ -64,7 +64,7 @@ namespace zanders3.Katla.Server
                 File.WriteAllLines("/var/lib/lxc/" + request.AppName + "/config", configFile);
 
                 //Start the container
-                logMessage("------> Starting container");
+                logMessage("-----> Starting container");
                 ProcessHelper.Run(logMessage, "lxc-stop", "-n", request.AppName);
                 ProcessHelper.Run(logMessage, "lxc-start", "-d", "-n", request.AppName);
 

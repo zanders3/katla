@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Common.Web;
@@ -9,11 +10,10 @@ using System.Text;
 
 namespace zanders3.Katla.Server
 {
-    [Route("/API/Deploy")]
+    [Route("/API/Deploy/{AppName}")]
     public class DeployAppRequest : IReturnVoid
     {
         public string AppName { get; set; }
-        public string Contents { get; set; }
     }
 
     [Route("/API/DeployStatus")]
@@ -28,7 +28,7 @@ namespace zanders3.Katla.Server
         public bool Completed { get; set; }
         public string Log { get; set; }
 
-        public string Contents;
+        public byte[] Contents;
         public StringBuilder Builder = new StringBuilder();
         public Exception Exception;
     }
@@ -40,7 +40,7 @@ namespace zanders3.Katla.Server
         public void Post(DeployAppRequest request)
         {
             if (AppStatusModel.Get(request.AppName) == null)
-                throw HttpError.NotFound("App not found");
+                throw HttpError.NotFound("App not found: " + request.AppName);
 
             lock (deployAppStatus)
             {
@@ -48,10 +48,14 @@ namespace zanders3.Katla.Server
                     throw HttpError.Conflict("App deployment already in progress");
             }
 
+            this.Request.Files[0].SaveTo("deploy.gzip");
+            byte[] contents = File.ReadAllBytes("deploy.gzip");
+            File.Delete("deploy.gzip");
+
             DeployAppStatusResponse response = new DeployAppStatusResponse()
             {
                 AppName = request.AppName,
-                Contents = request.Contents,
+                Contents = contents,
                 Completed = false,
                 Log = string.Empty,
             };

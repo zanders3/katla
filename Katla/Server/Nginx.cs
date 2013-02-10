@@ -26,14 +26,15 @@ namespace zanders3.Katla.Server
             {
                 "server {",
                 "\tlisten\t80;",
+                "\tsendfile\ton;",
                 "\tserver_name katla.3zanders.co.uk katla.cloudapp.net;",
                 "\tlocation / {",
                 "\t\tproxy_pass http://127.0.0.1:8080;",
+                "\t\tclient_max_body_size 200M;",
                 "\t}",
                 "}"
             });
             File.WriteAllLines("/etc/nginx/conf.d/config.conf", fileLines);
-
             ProcessHelper.Run(logMessage, "sudo", "rm", "/etc/nginx/sites-enabled/default");
             ProcessHelper.Run(logMessage, "sudo", "service", "nginx", "restart");
         }

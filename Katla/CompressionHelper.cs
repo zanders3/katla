@@ -7,7 +7,7 @@ namespace zanders3.Katla
 {
     public class CompressionHelper
     {
-        public static string CompressFolderToString(string directory)
+        public static byte[] CompressFolderToBytes(string directory)
         {
             using (MemoryStream outputStream = new MemoryStream())
             {
@@ -17,7 +17,7 @@ namespace zanders3.Katla
                     {
                         foreach (string file in Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories))
                         {
-                            stream.Write(file.Substring(directory.Length+1));
+                            stream.Write(file.Substring(directory.Length + 1));
                             byte[] contents = File.ReadAllBytes(file);
                             stream.Write(contents.Length);
                             stream.Write(contents);
@@ -28,14 +28,13 @@ namespace zanders3.Katla
                     }
                 }
 
-                return Convert.ToBase64String(outputStream.GetBuffer());
+                return outputStream.GetBuffer();
             }
         }
 
-        public static void ExtractFolderFromString(Action<string> logMessage, string compressedData, string targetDirectory)
+        public static void ExtractFolderFromStream(Action<string> logMessage, byte[] input, string targetDirectory)
         {
-            byte[] buffer = Convert.FromBase64String(compressedData);
-            using (MemoryStream inputStream = new MemoryStream(buffer))
+            using (MemoryStream inputStream = new MemoryStream(input, 0, input.Length))
             {
                 using (GZipStream decompress = new GZipStream(inputStream, CompressionMode.Decompress))
                 {

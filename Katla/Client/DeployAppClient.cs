@@ -3,6 +3,7 @@ using System.IO;
 using ServiceStack.ServiceClient.Web;
 using System.IO.Compression;
 using zanders3.Katla.Server;
+using System.Text;
 
 namespace zanders3.Katla
 {
@@ -15,14 +16,14 @@ namespace zanders3.Katla
                 JsonServiceClient client = new JsonServiceClient(endpoint);
 
                 Console.WriteLine("----> Compressing files");
-                string content = CompressionHelper.CompressFolderToString(Environment.CurrentDirectory);
+                byte[] folder = CompressionHelper.CompressFolderToBytes(Environment.CurrentDirectory);
 
-                Console.WriteLine("----> Uploading files");
-                client.Post(new DeployAppRequest()
-                {
-                    AppName = appName,
-                    Contents = content
-                });
+                Console.WriteLine("----> Uploading files (new)");
+                Console.WriteLine("Uploading " + ((float)folder.Length / 1024.0f) + " MB");
+
+                File.WriteAllBytes("deploy.gzip", folder);
+                client.PostFile<int>("/API/Deploy/" + appName, new FileInfo("deploy.gzip"), "multipart/form-data");
+                File.Delete("deploy.gzip");
 
                 DeployAppStatusRequest request = new DeployAppStatusRequest() { AppName = appName };
                 DeployAppStatusResponse response = client.Get(request);

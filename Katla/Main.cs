@@ -1,6 +1,9 @@
 using System;
+using System.Linq;
 using System.Diagnostics;
 using System.IO;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace zanders3.Katla
 {
@@ -13,10 +16,26 @@ namespace zanders3.Katla
 			Console.WriteLine("\n\tkatla server <endpoint> <port>\n\tRuns the katla server");
 		}
 
-        const string Endpoint = /*"http://localhost:8080/";*/"http://katla.cloudapp.net/";
+        const string Endpoint = /*"http://localhost:8080/";*/"http://katla.3zanders.co.uk/";
+
+        private static IEnumerable<Assembly> GetDependentAssemblies(Assembly analyzedAssembly)
+        {
+            return AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => GetNamesOfAssembliesReferencedBy(a)
+                       .Contains(analyzedAssembly.FullName));
+        }
+        
+        public static IEnumerable<string> GetNamesOfAssembliesReferencedBy(Assembly assembly)
+        {
+            return assembly.GetReferencedAssemblies()
+                .Select(assemblyName => assemblyName.FullName);
+        }
 
 		public static void Main(string[] args)
 		{
+            foreach (string assembly in GetNamesOfAssembliesReferencedBy(Assembly.GetExecutingAssembly()))
+                Console.WriteLine(assembly);
+
             if (args.Length == 0)
 			{
 				PrintHelp();

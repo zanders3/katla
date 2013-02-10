@@ -1,17 +1,20 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Server/DeployAppProcess.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Main.cs">
     <Files>
-      <File FileName="Main.cs" Line="56" Column="66" />
-      <File FileName="Server/ServerAppHost.cs" Line="16" Column="5" />
-      <File FileName="Server/CreateApp.cs" Line="40" Column="10" />
+      <File FileName="Main.cs" Line="35" Column="4" />
+      <File FileName="Server/ServerAppHost.cs" Line="18" Column="29" />
+      <File FileName="Server/CreateApp.cs" Line="95" Column="41" />
       <File FileName="ProcessHelper.cs" Line="27" Column="41" />
-      <File FileName="Server/CreateAppProcess.cs" Line="25" Column="13" />
+      <File FileName="Server/CreateAppProcess.cs" Line="23" Column="35" />
       <File FileName="Client/CreateAppClient.cs" Line="30" Column="12" />
-      <File FileName="Server/DeployApp.cs" Line="84" Column="18" />
-      <File FileName="Client/DeployAppClient.cs" Line="30" Column="18" />
-      <File FileName="CompressionHelper.cs" Line="57" Column="26" />
-      <File FileName="Server/DeployAppProcess.cs" Line="49" Column="17" />
+      <File FileName="Server/DeployApp.cs" Line="53" Column="40" />
+      <File FileName="Client/DeployAppClient.cs" Line="26" Column="28" />
+      <File FileName="CompressionHelper.cs" Line="59" Column="14" />
+      <File FileName="Server/DeployAppProcess.cs" Line="35" Column="17" />
+      <File FileName="Server/AppStatus.cs" Line="45" Column="9" />
+      <File FileName="Server/Nginx.cs" Line="38" Column="22" />
+      <File FileName="install.sh" Line="6" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -33,8 +36,8 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/alex/Code/web/katla/Katla/Client/DeployAppClient.cs" line="37" />
-      <Breakpoint file="/Users/alex/Code/web/katla/Katla/Server/DeployAppProcess.cs" line="28" />
+      <Breakpoint file="/Users/alex/Code/web/katla/Katla/Client/DeployAppClient.cs" line="38" />
+      <Breakpoint file="/Users/alex/Code/web/katla/Katla/Server/DeployAppProcess.cs" line="30" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
